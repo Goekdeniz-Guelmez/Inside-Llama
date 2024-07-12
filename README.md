@@ -1,7 +1,3 @@
-Certainly. Here's the `README.md` file rewritten in the style of Frank Underwood:
-
----
-
 # Inside Llama
 
 Welcome to "Inside Llama," a repository that doesn't just peel back the layers of Meta's Llama 3 model—it tears them apart, piece by piece, until every secret is laid bare. This notebook isn't for the faint of heart. It’s for those who know that the path to power is paved with knowledge and meticulous attention to detail. We're going to take you step by step through the creation and training of your own Llama 3 model, using a character-based tokenizer inspired by Andrew Karpathy's GPT-2 lecture. Of course, if you prefer, you can switch to the original tokenizer from the Huggingface Hub with the `transformers` library. Flexibility is power, after all.
