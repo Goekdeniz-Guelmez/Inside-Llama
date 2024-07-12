@@ -74,7 +74,3 @@ This project is licensed under the MIT License, a testament to the spirit of ope
 ---
 
 In the grand tapestry of artificial intelligence, "Inside Llama" stands as a detailed chronicle, a work of art in code. We invite you to delve into its depths, to understand its nuances, and to contribute to its evolution. For in the end, it is not merely about creating a model, but about perfecting an art form.
-
----
-
-Feel free to make any further adjustments or let me know if there's anything specific you'd like to add.
