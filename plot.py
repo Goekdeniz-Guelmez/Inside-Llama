@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -112,7 +111,7 @@ def plot_lm_head_output(output_features=111000, title="LM Head Output Features")
     output_tensor_np = output_features.numpy()
 
     # Plot the output tensor for the first batch
-    plt.figure(dpi=500, figsize=(10, 6))
+    plt.figure(dpi=5000, figsize=(60, 6))
     plt.imshow(output_tensor_np[0], aspect='auto', cmap='viridis')
     plt.colorbar()
     plt.title(title)
@@ -121,7 +120,7 @@ def plot_lm_head_output(output_features=111000, title="LM Head Output Features")
     plt.show()
 
 def plot_probs_or_logits(probs, title="Probabilities", ylabel="Probability", xlabel="Output Tokens", label="Probabilities"):
-    probs_np = probs.numpy() if isinstance(probs, torch.Tensor) else probs
+    probs_np = probs.detach().numpy()
 
     plt.figure(dpi=500, figsize=(10, 6))
     plt.plot(probs_np[0], label=label)
@@ -132,7 +131,7 @@ def plot_probs_or_logits(probs, title="Probabilities", ylabel="Probability", xla
     plt.show()
 
 def plot_mask_tensor(mask, title="Mask"):
-    mask_np = mask.numpy() if isinstance(mask, torch.Tensor) else mask
+    mask_np = mask.detach().numpy()
 
     plt.figure(dpi=500, figsize=(10, 6))
     plt.imshow(mask_np, aspect="auto", cmap="viridis")
