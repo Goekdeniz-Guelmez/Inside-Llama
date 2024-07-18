@@ -14,7 +14,7 @@ def createPlot(nums, xlabel="Dimensions", ylabel="Tokens", title="Embeddings Vis
     tokenized_input_length = embeddings_np.shape[1]
     embeddings_dimension = embeddings_np.shape[2]
 
-    fig, axes = plt.subplots(batch_size, 1, figsize=(45, 5 * batch_size), squeeze=False)  # Increase figure size for bigger squares
+    fig, axes = plt.subplots(batch_size, 1, figsize=(55, 5 * batch_size), squeeze=False)  # Increase figure size for bigger squares
     fig.subplots_adjust(hspace=0.6)
 
     for batch_idx in range(batch_size):
