@@ -111,7 +111,7 @@ def plot_lm_head_output(output_features=111000, title="LM Head Output Features")
     output_tensor_np = output_features.numpy()
 
     # Plot the output tensor for the first batch
-    plt.figure(dpi=5000, figsize=(60, 6))
+    plt.figure(dpi=600, figsize=(60, 6))
     plt.imshow(output_tensor_np[0], aspect='auto', cmap='viridis')
     plt.colorbar()
     plt.title(title)
