@@ -106,3 +106,38 @@ class LlamaVisualizer:
 
         plt.title("Simplified Llama Model Architecture")
         plt.show()
+
+
+def creatLMPlot(nums, xlabel="Dimensions", ylabel="Tokens", title="Embeddings Visualization"):
+    plt.figure(dpi=10000)
+    embeddings_np = nums.detach().numpy()
+
+    batch_size = embeddings_np.shape[0]
+    tokenized_input_length = embeddings_np.shape[1]
+    embeddings_dimension = embeddings_np.shape[2]
+
+    fig, axes = plt.subplots(batch_size, 1, figsize=(35, 5 * batch_size), squeeze=False)  # Increase figure size for bigger squares
+    fig.subplots_adjust(hspace=0.5)
+
+    for batch_idx in range(batch_size):
+        ax = axes[batch_idx, 0]
+        cax = ax.matshow(embeddings_np[batch_idx], aspect='auto', cmap='viridis')
+
+        fig.colorbar(cax, ax=ax)
+
+        ax.set_xticks(np.arange(embeddings_dimension))
+        ax.set_yticks(np.arange(tokenized_input_length))
+        ax.set_xticklabels([f'Vocab {i}' for i in range(embeddings_dimension)])
+        ax.set_yticklabels([f'Token {i}' for i in range(tokenized_input_length)])
+
+        plt.xticks(rotation=90)
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+
+        for i in range(tokenized_input_length):
+            for j in range(embeddings_dimension):
+                text = ax.text(j, i, f'{embeddings_np[batch_idx, i, j]:.2f}', ha='center', va='center', color='white')
+
+        ax.set_title(f"{title} - Batch {batch_idx + 1}")
+
+    plt.show()
