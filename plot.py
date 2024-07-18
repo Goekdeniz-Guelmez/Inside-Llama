@@ -108,36 +108,25 @@ class LlamaVisualizer:
         plt.show()
 
 
-def creatLMPlot(nums, xlabel="Dimensions", ylabel="Tokens", title="Embeddings Visualization"):
-    plt.figure(dpi=10000)
-    embeddings_np = nums.detach().numpy()
+def plot_lm_head_output(output_features=111000, title="LM Head Output Features"):
+    output_tensor_np = output_features.numpy()
 
-    batch_size = embeddings_np.shape[0]
-    tokenized_input_length = embeddings_np.shape[1]
-    embeddings_dimension = embeddings_np.shape[2]
+    # Plot the output tensor for the first batch
+    plt.figure(dpi=500, figsize=(10, 6))
+    plt.imshow(output_tensor_np[0], aspect='auto', cmap='viridis')
+    plt.colorbar()
+    plt.title(title)
+    plt.xlabel('Output Features')
+    plt.ylabel('Sequence Length')
+    plt.show()
 
-    fig, axes = plt.subplots(batch_size, 1, figsize=(35, 5 * batch_size), squeeze=False)  # Increase figure size for bigger squares
-    fig.subplots_adjust(hspace=0.5)
+def plot_probs_or_logits(probs, title="Probabilities", ylabel="Probability", xlabel="Output Tokens", label="Probabilities"):
+    probs_np = probs.numpy() if isinstance(probs, torch.Tensor) else probs
 
-    for batch_idx in range(batch_size):
-        ax = axes[batch_idx, 0]
-        cax = ax.matshow(embeddings_np[batch_idx], aspect='auto', cmap='viridis')
-
-        fig.colorbar(cax, ax=ax)
-
-        ax.set_xticks(np.arange(embeddings_dimension))
-        ax.set_yticks(np.arange(tokenized_input_length))
-        ax.set_xticklabels([f'Vocab {i}' for i in range(embeddings_dimension)])
-        ax.set_yticklabels([f'Token {i}' for i in range(tokenized_input_length)])
-
-        plt.xticks(rotation=90)
-        ax.set_xlabel(xlabel)
-        ax.set_ylabel(ylabel)
-
-        for i in range(tokenized_input_length):
-            for j in range(embeddings_dimension):
-                text = ax.text(j, i, f'{embeddings_np[batch_idx, i, j]:.2f}', ha='center', va='center', color='white')
-
-        ax.set_title(f"{title} - Batch {batch_idx + 1}")
-
+    plt.figure(dpi=500, figsize=(10, 6))
+    plt.plot(probs_np[0], label=label)
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.legend()
     plt.show()
