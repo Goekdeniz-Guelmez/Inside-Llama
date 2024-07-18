@@ -7,15 +7,15 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 def createPlot(nums, xlabel="Dimensions", ylabel="Tokens", title="Embeddings Visualization"):
-    plt.figure(dpi=300)
+    plt.figure(dpi=500)
     embeddings_np = nums.detach().numpy()
 
     batch_size = embeddings_np.shape[0]
     tokenized_input_length = embeddings_np.shape[1]
     embeddings_dimension = embeddings_np.shape[2]
 
-    fig, axes = plt.subplots(batch_size, 1, figsize=(35, 5 * batch_size), squeeze=False)  # Increase figure size for bigger squares
-    fig.subplots_adjust(hspace=0.5)
+    fig, axes = plt.subplots(batch_size, 1, figsize=(45, 5 * batch_size), squeeze=False)  # Increase figure size for bigger squares
+    fig.subplots_adjust(hspace=0.6)
 
     for batch_idx in range(batch_size):
         ax = axes[batch_idx, 0]
