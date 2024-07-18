@@ -130,3 +130,25 @@ def plot_probs_or_logits(probs, title="Probabilities", ylabel="Probability", xla
     plt.ylabel(ylabel)
     plt.legend()
     plt.show()
+
+def plot_mask_tensor(mask, title="Mask"):
+    mask_np = mask.numpy() if isinstance(mask, torch.Tensor) else mask
+
+    plt.figure(dpi=500, figsize=(10, 6))
+    plt.imshow(mask_np, aspect="auto", cmap="viridis")
+    plt.colorbar()
+    plt.title(title)
+    plt.xlabel("Position")
+    plt.ylabel("Position")
+    plt.show()
+
+def plot_intermediate_attention(scores, title="Attention Scores", xlabel="Keys", ylabel="Queries"):
+    scores_np = scores.clone().detach().cpu().numpy()
+    
+    plt.figure(dpi=500, figsize=(10, 6))
+    plt.imshow(scores_np[0][0], aspect='auto', cmap='viridis')
+    plt.colorbar()
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.show()
