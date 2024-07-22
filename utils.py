@@ -182,7 +182,7 @@ def visualize_parameters(parameters, combined_file_path, individual_folder_path)
     if not os.path.exists(individual_folder_path):
         os.makedirs(individual_folder_path)
 
-    fig, axes = plt.subplots(rows, cols, figsize=(20, rows * 5), dpi=600)
+    fig, axes = plt.subplots(rows, cols, figsize=(20, rows * 5), dpi=500)
 
     for ax, (name, param) in zip(axes.flatten(), parameters.items()):
         fig_individual, ax_individual = plt.subplots()
