@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
+import re
 
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -151,3 +153,57 @@ def plot_intermediate_attention(scores, title="Attention Scores", xlabel="Keys",
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.show()
+
+def parse_parameters_from_file(file_path):
+    parameters = {}
+    with open(file_path, 'r') as file:
+        content = file.read()
+    parameter_blocks = content.strip().split('\n\n')
+    for block in parameter_blocks:
+        lines = block.strip().split('\n')
+        if len(lines) < 2:
+            continue
+        name_line = lines[0]
+        data_lines = lines[1:]
+        name_match = re.match(r"Name: (.+), Shape", name_line)
+        if not name_match:
+            continue
+        name = name_match.group(1)
+        data_str = ''.join(data_lines)
+        data = torch.tensor(eval(data_str))
+        parameters[name] = data
+    return parameters
+
+def visualize_parameters(parameters, file_path):
+    n = len(parameters)
+    cols = 4  # Number of columns in the plot grid
+    rows = (n + cols - 1) // cols  # Calculate number of rows needed
+
+    fig, axes = plt.subplots(rows, cols, figsize=(20, rows * 5))
+
+    for ax, (name, param) in zip(axes.flatten(), parameters.items()):
+        if param.dim() == 1:
+            ax.plot(param.numpy())
+            ax.set_title(f'{name} (Bias)')
+        elif param.dim() == 2:
+            im = ax.imshow(param.numpy(), aspect='auto', cmap='viridis')
+            fig.colorbar(im, ax=ax)
+            ax.set_title(f'{name} (Weights)')
+        ax.set_xlabel('Dimension 1')
+        ax.set_ylabel('Dimension 2')
+
+    # Remove empty subplots
+    for ax in axes.flatten()[n:]:
+        fig.delaxes(ax)
+
+    plt.tight_layout()
+    plt.savefig(file_path)
+    plt.show()
+
+def save_model_parameters_to_file(model, file_path):
+    torch.set_printoptions(profile="full")
+    with open(file_path, 'w') as file:
+        for name, param in model.named_parameters():
+            file.write(f"Name: {name}, Shape: {param.shape}\n")
+            file.write(f"{param.data.tolist()}\n\n")
+    torch.set_printoptions(profile="default")
