@@ -481,11 +481,3 @@ class Transformer(nn.Module):
         output = self.lm_head(hidden_states).float()  # Generate the final output logits. Shape [B, L, vocab_size].
 
         return output  # Return the output logits.
-    
-
-model = Transformer(ModelArgs)
-print(model)
-
-logits = model(torch.tensor([[1, 3, 4]]), 0)
-print(logits.shape)
-print(logits)
