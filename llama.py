@@ -17,6 +17,7 @@ class ModelArgs:
     vocab_size: int = 32
     pad_idx: int = 0
 
+    # Inference and Training
     max_seq_len: int = 32
     max_batch_size: int = 6
 
@@ -446,7 +447,7 @@ class Transformer(nn.Module):
             use_scaled=args.use_scaled_rope
         )
 
-    def forward(self, tokens: torch.Tensor, start_pos: int):
+    def forward(self, tokens: torch.Tensor, start_pos: int = 0, targets=None):
         """
         Perform a forward pass through the Transformer model.
 
@@ -478,6 +479,14 @@ class Transformer(nn.Module):
 
         hidden_states = self.norm(hidden_states) # Apply RMS normalization. Shape [B, L, hidden_dim].
 
-        output = self.lm_head(hidden_states).float()  # Generate the final output logits. Shape [B, L, vocab_size].
+        logits = self.lm_head(hidden_states).float()  # Generate the final output logits. Shape [B, L, vocab_size].
 
-        return output  # Return the output logits.
+        if targets is None: # If no targets are provided, loss is None.
+            loss = None
+        else:
+            B, L, D = logits.shape # Reshape logits to (B*L, vocab_size) for loss calculation.
+            logits = logits.view(B*L, D) # Reshape logits to (B*L, vocab_size) for loss calculation.
+            targets = targets.view(B*L) # Flatten targets to match the logits shape.
+            loss = F.cross_entropy(logits, targets) # Calculate cross-entropy loss.
+
+        return logits, loss # Return the output logits and the loss
